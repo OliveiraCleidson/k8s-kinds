@@ -1,0 +1,24 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_LEFT_RIGHT()
+SHOW_PERSON_PORTRAIT()
+
+System_Ext(frontend, "Frontend")
+System_Ext(backendClient, "Backend Client")
+System_Ext(s3, "Storage Service", "S3")
+System_Boundary(productSystem, "Product System"){
+  Container(backendApi, "Backend API", "NestJS")
+  Container(db, "Banco de Dados", "SQL Server")
+  Container(cache, "Cache", "Redis")
+
+  Rel(backendApi, db, "Persiste os dados em", "TypeORM")
+  Rel(backendApi, cache, "Salva dados relavantes em", "RedisIO")
+
+}
+
+Rel(backendApi, s3, "Persiste objetos usando", "HTTPS/JSON")
+Rel(frontend, backendApi, "Interage via", "HTTPS/JSON")
+Rel(backendClient, backendApi, "Interage via", "gRPC")
+
+@enduml
