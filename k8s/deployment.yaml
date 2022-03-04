@@ -16,7 +16,16 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: "olivdev/hello-go:v6.5"
+          image: "olivdev/hello-go:v9.6"
+
+          resources:
+            requests:
+              cpu: 500m
+              memory: 20Mi
+            limits:
+              cpu: 500m
+              memory: 100Mi
+
           startupProbe:
             httpGet:
               path: /healthz
